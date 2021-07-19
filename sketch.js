@@ -4,7 +4,10 @@ var shark, shark_img;
 var score = 0;
 var fishGroup;
 var edges;
-
+var level;
+var fishGotten;
+var fishSpeed = fish.velocityX
+var fishSp
 
 function preload(){
   back_img = loadImage("images/ocean.jpg")
@@ -21,7 +24,8 @@ function setup() {
   shark.scale = 0.20;
 
   fishGroup = new Group;
-
+  fishGotten = 0;
+  level = 1;
   edges = createEdgeSprites();
 }
 
@@ -29,8 +33,8 @@ function setup() {
 function draw() {
   background(back_img);  
   fill("black");
-  text(score, 50, 375);
-
+  text("Score: "+score, 50, 350);
+  text("Fish Speed: "+abs(fishSp), 50, 375);
 
   if(keyIsDown(UP_ARROW)){
 
@@ -47,13 +51,19 @@ function draw() {
     
     fishGroup.destroyEach();
     score = score+1;
-    
+    fishGotten += 1;
   }
 
   fish();
   shark.collide(edges);
 
+  if(fishGotten%10===0 && fishGotten != 0){
 
+    level += 1;
+    text("You Have Leveled Up! Great Job :)", 330, 100);
+
+  }
+  //console.log(fish.velocityX)
   drawSprites();
 }
 
@@ -64,7 +74,7 @@ function fish(){
       fishes.addImage("fish", fish_img);
       
 
-    fishes.velocityX = -6-(score/5);
+    fishSp = fishes.velocityX = -6-(score/5);
     fishes.scale=0.09
     console.log(fishes.velocityX)
     fishGroup.add(fishes);
